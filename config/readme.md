@@ -1,0 +1,1 @@
+All the configuration in the inventory folder is just an example so you can create a configuration according to your needs but it is not part of the automation

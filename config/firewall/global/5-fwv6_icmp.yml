@@ -1,0 +1,191 @@
+/ipv6/firewall/filter:
+
+# -------------------------------------------------
+# The following configuration is just an example.
+# You need to create the files for your needs.
+# -------------------------------------------------
+
+#INPUT
+
+- comment: "icmpv6_local-1"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "1"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_local-2"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "2"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_local-3"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "3"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_local-4"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "4"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_local-128"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "128"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_local-129"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "129"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_local-133"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "133"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_local-134"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "134"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_local-135"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "135"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_local-136"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "136"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_local-137"
+  order: top
+  chain: input
+  protocol: "icmpv6"
+  icmp_options: "137"
+  disabled: 'false'
+  action: 'accept'
+
+#FORWARD
+
+- comment: "icmpv6_forward-1"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "1"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_forward-2"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "2"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_forward-3"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "3"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_forward-4"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "4"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_forward-128"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "128"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_forward-129"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "129"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_forward-133"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "133"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_forward-134"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "134"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_forward-135"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "135"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_forward-136"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "136"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmpv6_forward-137"
+  order: top
+  chain: forward
+  protocol: "icmpv6"
+  icmp_options: "137"
+  disabled: 'false'
+  action: 'accept'
+
+
+
+
+  

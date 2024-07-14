@@ -1,0 +1,15 @@
+
+
+/ipv6/firewall/address-list:
+
+# -------------------------------------------------
+# The following configuration is just an example.
+# You need to create the files for your needs.
+# -------------------------------------------------
+
+- comment: "SET_NET6_NOLOG"
+  address: 
+  - '::1/128'
+  - 'ff02::1/128'
+  - 'ff02::1:2/128'
+  - 'ff00::/8'

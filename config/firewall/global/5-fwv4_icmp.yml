@@ -1,0 +1,79 @@
+/ip/firewall/filter:
+
+# -------------------------------------------------
+# The following configuration is just an example.
+# You need to create the files for your needs.
+# -------------------------------------------------
+
+#INPUT
+- comment: "icmp_local-0"
+  order: top
+  chain: input
+  protocol: "icmp"
+  icmp_options: "0:0-255"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmp_local-3"
+  order: top
+  chain: input
+  protocol: "icmp"
+  icmp_options: "3:0-255"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmp_local-8"
+  order: top
+  chain: input
+  protocol: "icmp"
+  icmp_options: "8:0-255"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmp_local-11"
+  order: top
+  chain: input
+  protocol: "icmp"
+  icmp_options: "11:0-255"
+  disabled: 'false'
+  action: 'accept'
+
+
+
+#FORWARD
+
+- comment: "icmp_forward-0"
+  order: top
+  chain: forward
+  protocol: "icmp"
+  icmp_options: "0:0-255"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmp_forward-3"
+  order: top
+  chain: forward
+  protocol: "icmp"
+  icmp_options: "3:0-255"
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "icmp_forward-8"
+  order: top
+  chain: forward
+  protocol: "icmp"
+  icmp_options: "8:0-255"
+  disabled: 'false'
+  action: 'accept' 
+
+- comment: "icmp_forward-11"
+  order: top
+  chain: forward
+  protocol: "icmp"
+  icmp_options: "11:0-255"
+  disabled: 'false'
+  action: 'accept'
+
+
+
+  

@@ -1,0 +1,22 @@
+/ip/firewall/filter:
+- comment: "internal_to_internetv4"
+  order: top
+  chain: forward
+  src_address_list: SET_NET4_PRIVATE
+  dst_address_list: '!SET_NET4_PRIVATE'
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'
+
+
+/ip/firewall/mangle:
+
+- comment: "ipv4_clamp_mss_to_pmtu"
+  order: top
+  chain: forward
+  protocol: tcp
+  passthrough: 'true'
+  action: 'change-mss'
+  tcp_flags: "syn"
+  new_mss: "clamp-to-pmtu"

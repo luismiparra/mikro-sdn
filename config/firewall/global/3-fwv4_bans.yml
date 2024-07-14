@@ -1,0 +1,49 @@
+/ip/firewall/filter:
+
+# -------------------------------------------------
+# The following configuration is just an example.
+# You need to create the files for your needs.
+# -------------------------------------------------
+
+- comment: "rpban_input_frominside_log"
+  order: posi
+  posi: '1'
+  chain: input
+  src_address_list: SET_NET4_PRIVATE
+  dst_address_list: rp-ban-v4
+  log: 'true'
+  log_prefix: 'RPLOG=rpnftables RPTYPE=insideTOban RPSCOPE=private IPV=4 RPINFO=none ACTION=log'
+  disabled: 'false'
+  action: 'log'
+
+- comment: "rpban_forward_frominside_log"
+  order: posi
+  posi: '2'
+  chain: forward
+  src_address_list: SET_NET4_PRIVATE
+  dst_address_list: rp-ban-v4
+  log: 'true'
+  log_prefix: 'RPLOG=rpnftables RPTYPE=insideTOban RPSCOPE=private IPV=4 RPINFO=none ACTION=log'
+  disabled: 'false'
+  action: 'log'
+
+- comment: "rpban_input"
+  order: posi
+  posi: '3'
+  chain: input
+  src_address_list: rp-ban-v4
+  log: 'true'
+  log_prefix: 'RPLOG=rpnftables RPTYPE=rpban RPSCOPE=public IPV=4 RPINFO=none ACTION=drop'
+  disabled: 'false'
+  action: 'drop'
+
+- comment: "rpban_forward"
+  order: posi
+  posi: '4'
+  chain: forward
+  src_address_list: rp-ban-v4
+  log: 'true'
+  log_prefix: 'RPLOG=rpnftables RPTYPE=rpban RPSCOPE=public IPV=4 RPINFO=none ACTION=drop'
+  disabled: 'false'
+  action: 'drop'
+

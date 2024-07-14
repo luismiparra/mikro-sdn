@@ -1,0 +1,13 @@
+/ip/dhcp-server/lease:
+
+- comment: example_vlan1
+  address: 10.154.1.2
+  mac-address: AA:BB:CC:DD:EE:11
+  server: dhcpV4_1safe
+
+- comment: example_vlan2
+  address: 10.154.2.2
+  mac-address: AA:BB:CC:DD:EE:22
+  server: dhcpV4_2dmz
+
+

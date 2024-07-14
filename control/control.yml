@@ -1,0 +1,7 @@
+#run_1_mikro_auto TRUE = AUTOMATION ENABLED       FALSE = DO NOT EXEC AUTOMATION 
+run_1_mikro_auto: true
+#mikro_auto_dryrun TRUE = SIMULATE PUSH AND CLEAN       FALSE = REAL PUSH AND CLEAN
+mikro_auto_dryrun: false
+#Define mode "config" (just generate config) or "global" or "firewall"
+mikro_auto_mode: 'global'
+

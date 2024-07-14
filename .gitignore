@@ -1,0 +1,8 @@
+.env
+.venv
+.vscode
+config/secrets
+config/proposed
+config/old_proposed
+secrets
+__pycache__

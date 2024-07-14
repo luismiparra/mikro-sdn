@@ -1,0 +1,80 @@
+/ipv6/firewall/mangle:
+
+# -------------------------------------------------
+# The following configuration is just an example.
+# You need to create the files for your needs.
+# -------------------------------------------------
+
+
+#PRIORITY 1
+#TCP
+- comment: "p1_tcp_a_v6"
+  order: top
+  chain: prerouting
+  #ssh dns bgp iperf3
+  dst_port: '22,53,179,1194-1200,1883,3389,5201'
+  protocol: tcp
+  log: 'false'
+  disabled: 'false'
+  passthrough: 'true'
+  action: 'mark-packet'
+  new_packet_mark: 'p1'
+
+#UDP
+- comment: "p1_udp_a_v6"
+  order: top
+  chain: prerouting
+  dst_port: '53,179,119,500,1194-1200,3724,3478-3479,3000-4000'
+  protocol: udp
+  log: 'false'
+  disabled: 'false'
+  passthrough: 'true'
+  action: 'mark-packet'
+  new_packet_mark: 'p1'
+
+- comment: "p1_udp_b_v6"
+  order: top
+  chain: prerouting
+  dst_port: '4500,4784,5000-5030,6000-6030,6060,6113,6250,7000-7030,9000-10000'
+  protocol: udp
+  log: 'false'
+  disabled: 'false'
+  passthrough: 'true'
+  action: 'mark-packet'
+  new_packet_mark: 'p1'
+
+- comment: "p1_udp_c_v6"
+  order: top
+  chain: prerouting
+  dst_port: '50000-65535'
+  protocol: udp
+  log: 'false'
+  disabled: 'false'
+  passthrough: 'true'
+  action: 'mark-packet'
+  new_packet_mark: 'p1'
+
+#PRIORITY 3
+#TCP
+- comment: "p3_tcp_a_v6"
+  order: top
+  chain: prerouting
+  dst_port: '80'
+  protocol: tcp
+  log: 'false'
+  disabled: 'false'
+  passthrough: 'true'
+  action: 'mark-packet'
+  new_packet_mark: 'p3'
+
+#UDP
+- comment: "p3_udp_a_v6"
+  order: top
+  chain: prerouting
+  dst_port: '6881-6889'
+  protocol: udp
+  log: 'false'
+  disabled: 'false'
+  passthrough: 'true'
+  action: 'mark-packet'
+  new_packet_mark: 'p3'

@@ -1,0 +1,44 @@
+#MANUAL STEPS:
+#1) Reset password and create admin
+#2) Create api user
+#3) Create mikroread user
+#4) Update files:
+#----last software version
+#----user-manager mikrotik
+#----yourdomain.int.crt
+#----yourdomain.int.key
+#----radius.yourdomain.int.crt
+#----radius.yourdomain.int.key
+#----yourdomain_INT_CA.crt
+#-------------------------------------------------------------------
+
+#SCRIPT CLI STEPS:
+
+system/reboot
+
+certificate/import file-name=yourdomain_INT_CA.crt name=yourdomain_INT_CA.crt passphrase=""
+certificate/import file-name=radius.yourdomain.int.crt name=radius.yourdomain.int.crt passphrase=""
+certificate/import file-name=radius.yourdomain.int.key name=radius.yourdomain.int.key passphrase=""
+certificate/import file-name=yourdomain.int.crt name=yourdomain.int.crt passphrase=""
+certificate/import file-name=yourdomain.int.key name=yourdomain.int.key passphrase=""
+
+/ip/firewall/address-list
+add address=10.203.100.200 comment=local_rp_SET_ALLOW_VPN_MGMT list=local_rp_SET_ALLOW_VPN_MGMT
+add address=10.203.100.201 comment=local_rp_SET_ALLOW_VPN_MGMT list=local_rp_SET_ALLOW_VPN_MGMT
+/ip/firewall/filter
+add action=accept chain=input comment=local_rp_INPUT_ALLOW_VPN_MGMT src-address-list=local_rp_SET_ALLOW_VPN_MGMT
+
+/interface wireguard
+add comment={{wg_comment}} mtu=1420 name={{wg_name}} private-key="{{wg_private_key}}"
+
+/interface wireguard peers
+add allowed-address={{peer_allowed_address}} comment={{peer_comment}} endpoint-address={{endpoint_address}} \
+endpoint-port={{peer_endpoint_port}} interface={{peer_interface}} persistent-keepalive={{peer_persistent_keepalive}} \
+preshared-key="{{peer_preshared_key}}" public-key="{{peer_public_key}}"
+
+/ip address
+add address={{ip_address}} comment={{ip_comment}} interface={{wg_name}}
+
+
+/system scheduler
+add comment={{portchange_comment}} interval=30m name={{portchange_comment}} on-event="/interface wireguard set {{wg_name}} listen-port=0" policy=read,write,policy,test,password,sniff,sensitive,romon start-date=2022-01-01 start-time=00:00:00

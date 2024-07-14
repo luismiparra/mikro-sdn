@@ -1,0 +1,35 @@
+/ipv6/firewall/filter:
+- comment: "internal_to_internetv6"
+  order: posi
+  posi: '5'
+  chain: forward
+  src_address_list: SET_NET6_PRIVATE
+  dst_address_list: '!SET_NET6_PRIVATE'
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'
+
+
+- comment: "fw_ipv6_disabled_sites"
+  order: posi
+  posi: '4'
+  chain: forward
+  src_address_list: SET_NET6_PRIVATE
+  dst_address_list: SET_NET6_DISABLED_IPV6_SITES
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'reject'
+
+
+/ipv6/firewall/mangle:
+
+- comment: "ipv6_clamp_mss_to_pmtu"
+  order: top
+  chain: forward
+  protocol: tcp
+  passthrough: 'true'
+  action: 'change-mss'
+  tcp_flags: "syn"
+  new_mss: "clamp-to-pmtu"

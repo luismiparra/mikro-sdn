@@ -1,0 +1,13 @@
+routeros_api
+python-dotenv
+wireguard
+wgconfig
+qrcode
+image
+markdown
+jinja2
+pyyaml
+influxdb-client
+icmplib
+pandas
+flask

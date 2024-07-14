@@ -1,0 +1,79 @@
+/ip/firewall/address-list:
+
+# -------------------------------------------------
+# The following configuration is just an example.
+# You need to create the files for your needs.
+# -------------------------------------------------
+
+- comment: "SET_NET4_SAFE"
+  address: 
+  #Guest networks
+  - '10.151.1.0/24'
+  - '10.152.1.0/24'
+  - '10.153.1.0/24'
+  - '10.154.1.0/24'
+  - '10.155.1.0/24'
+
+- comment: "SET_HOSTS4_ROUTEVIA_WG"
+  address: 
+  #Guest networks
+  - '10.151.4.0/24'
+  - '10.152.4.0/24'
+  - '10.153.4.0/24'
+  - '10.154.4.0/24'
+  - '10.155.4.0/24'
+
+- comment: "SET_NET4_NOLOG"
+  address: 
+  - '127.0.0.1'
+  - '224.0.0.1'
+  - '255.255.255.255'
+
+- comment: "SET_NET4_PRIVATE"
+  address: 
+  - '10.0.0.0/8'       
+  - '172.16.0.0/12'  
+
+- comment: "SET_HOSTS4_ALLOW_MGMT"
+  address: 
+#Localhost
+  - '127.0.0.1'
+#P2P WG MAIN NET
+  - '10.151.250.0/24'
+  - '10.152.250.0/24' 
+  - '10.153.250.0/24' 
+  - '10.154.250.0/24' 
+  - '10.155.250.0/24' 
+  - '10.156.250.0/24' 
+
+
+- comment: "SET_NET4_INTERNET"
+  address: 
+  - '0.0.0.0/0'
+  
+
+- comment: "SET_NET4_RP_DMZ"
+  address: 
+  - '10.151.2.0/24'
+  - '10.152.2.0/24'
+  - '10.153.2.0/24'
+  - '10.154.2.0/24'
+  - '10.155.2.0/24'
+  - '10.156.2.0/24'
+
+
+- comment: "SET_HOSTS4_NTP"
+  address: 
+  - '10.151.2.2'
+
+- comment: "SET_HOSTS4_LOG"
+  address: 
+  - '10.151.2.2'
+
+- comment: "SET_HOSTS4_DNS"
+  address: 
+  - '10.151.2.88'
+  - '10.152.2.88'
+
+
+

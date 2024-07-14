@@ -1,0 +1,19 @@
+/ip/firewall/filter:
+- comment: "forward_safe"
+  order: top
+  chain: forward
+  src_address_list: SET_NET4_SAFE
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "input_safe"
+  order: top
+  chain: input
+  src_address_list: SET_NET4_SAFE
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'
+

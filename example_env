@@ -1,0 +1,20 @@
+#THIS IS JUST A .ENV FILE EXAMPLE
+
+#Debug Mode
+DEBUGMODE= true
+
+#General config
+CONFIG="config"
+CONTROLPATH="control"
+SECRETS="secrets"
+MAIN_AUTO_PY_EXEC="1-mikro-auto/mikro_main.py"
+INVENTORY="config\inventory"
+
+#Define protected items prefix
+LOCALSTRING='["local_auto_", "auto_webapp_"]'
+
+#Mikrotik API credentials
+MIKRO_USER="USER_MIKRO_WRITE"
+MIKRO_PASSWORD="PASSWORD_MIKRO_WRITE"
+MIKRO_READ_USER="USER_MIKRO_READ"
+MIKRO_READ_PASSWORD="PASSWORD_RMIKRO_READ"

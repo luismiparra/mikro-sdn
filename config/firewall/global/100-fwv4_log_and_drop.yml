@@ -1,0 +1,203 @@
+/ip/firewall/filter:
+
+#-------------------------------------icmp
+
+- comment: "input_internal_icmp_deny"
+  order: bot
+  chain: input
+  src_address_list: SET_NET4_PRIVATE
+  protocol: icmp
+  log: 'true'
+  log_prefix: 'FW=in_reject T=icmp S=PRIV IPV=4 '
+  disabled: 'false'
+  action: 'reject'
+  reject_with: 'icmp-admin-prohibited'
+
+- comment: "forward_internal_icmp_deny"
+  order: bot
+  chain: forward
+  src_address_list: SET_NET4_PRIVATE
+  protocol: icmp
+  log: 'true'
+  log_prefix: 'FW=fw_reject T=icmp S=PRIV IPV=4 '
+  disabled: 'false'
+  action: 'reject'
+  reject_with: 'icmp-admin-prohibited'
+
+- comment: "input_public_icmp_deny"
+  order: bot
+  chain: input
+  protocol: icmp
+  log: 'true'
+  log_prefix: 'FW=in_reject T=icmp S=PUB IPV=4 '
+  disabled: 'false'
+  action: 'drop'
+
+- comment: "forward_public_icmp_deny"
+  order: bot
+  chain: forward
+  protocol: icmp
+  log: 'true'
+  log_prefix: 'FW=fw_reject T=icmp S=PUB IPV=4 '
+  disabled: 'false'
+  action: 'drop' 
+
+#-------------------------------------ssh
+
+- comment: "input_internal_ssh_deny"
+  order: bot
+  chain: input
+  src_address_list: SET_NET4_PRIVATE
+  dst_port: '22'
+  protocol: tcp
+  log: 'true'
+  log_prefix: 'FW=in_reject T=SSH S=PRIV IPV=4 '
+  disabled: 'false'
+  action: 'reject'
+  reject_with: 'icmp-admin-prohibited'
+
+- comment: "forward_internal_ssh_deny"
+  order: bot
+  chain: forward
+  src_address_list: SET_NET4_PRIVATE
+  dst_port: '22'
+  protocol: tcp
+  log: 'true'
+  log_prefix: 'FW=fw_reject T=SSH S=PRIV IPV=4 '
+  disabled: 'false'
+  action: 'reject'
+  reject_with: 'icmp-admin-prohibited'
+
+
+- comment: "intput_public_ssh_deny"
+  order: bot
+  chain: input
+  src_address_list: SET_NET4_INTERNET
+  dst_port: '22'
+  protocol: tcp
+  log: 'true'
+  log_prefix: 'FW=in_drop T=SSH S=PUB IPV=4 '
+  disabled: 'false'
+  action: 'drop'
+
+
+- comment: "forward_public_ssh_deny"
+  order: bot
+  chain: forward
+  src_address_list: SET_NET4_INTERNET
+  dst_port: '22'
+  protocol: tcp
+  log: 'true'
+  log_prefix: 'FW=fw_drop T=SSH S=PUB IPV=4 '
+  disabled: 'false'
+  action: 'drop'
+
+
+
+#-------------------------------------nolog drop
+
+
+#NO LOG SPECIFIC
+
+- comment: "input_src_nolog_deny"
+  order: bot
+  chain: input
+  src_address_list: SET_NET4_NOLOG
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'drop'
+
+- comment: "forward_src_nolog_deny"
+  order: bot
+  chain: forward
+  src_address_list: SET_NET4_NOLOG
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'drop'
+
+- comment: "input_dst_nolog_deny"
+  order: bot
+  chain: input
+  dst_address_list: SET_NET4_NOLOG
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'drop'
+
+- comment: "forward_dst_nolog_deny"
+  order: bot
+  chain: forward
+  dst_address_list: SET_NET4_NOLOG
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'drop'
+
+
+#NO LOG INVALID
+
+- comment: "intput_invalid_public_deny"
+  order: bot
+  chain: input
+  src_address_list: SET_NET4_INTERNET
+  log: 'false'
+  log_prefix: 'no'
+  connection_state: 'invalid'
+  disabled: 'false'
+  action: 'drop'
+
+
+- comment: "forward_invalid_public_deny"
+  order: bot
+  chain: forward
+  src_address_list: SET_NET4_INTERNET
+  log: 'false'
+  log_prefix: 'no'
+  connection_state: 'invalid'
+  disabled: 'false'
+  action: 'drop'
+
+
+#-------------------------------------GROBAL DROP
+
+- comment: "input_internal_deny"
+  order: bot
+  chain: input
+  src_address_list: SET_NET4_PRIVATE
+  log: 'true'
+  log_prefix: 'FW=in_reject S=PRIV IPV=4 '
+  disabled: 'false'
+  action: 'reject'
+  reject_with: 'icmp-admin-prohibited'
+
+- comment: "forward_internal_deny"
+  order: bot
+  chain: forward
+  src_address_list: SET_NET4_PRIVATE
+  log: 'true'
+  log_prefix: 'FW=fw_reject S=PRIV IPV=4 '
+  disabled: 'false'
+  action: 'reject'
+  reject_with: 'icmp-admin-prohibited'
+
+#    public
+- comment: "intput_public_deny"
+  order: bot
+  chain: input
+  src_address_list: SET_NET4_INTERNET
+  log: 'true'
+  log_prefix: 'FW=in_drop S=PUB IPV=4 '
+  disabled: 'false'
+  action: 'drop'
+
+
+- comment: "forward_public_deny"
+  order: bot
+  chain: forward
+  src_address_list: SET_NET4_INTERNET
+  log: 'true'
+  log_prefix: 'FW=fw_drop S=PUB IPV=4 '
+  disabled: 'false'
+  action: 'drop'

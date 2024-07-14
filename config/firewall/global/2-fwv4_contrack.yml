@@ -1,0 +1,31 @@
+/ip/firewall/filter:
+
+# -------------------------------------------------
+# The following configuration is just an example.
+# You need to create the files for your needs.
+# -------------------------------------------------
+
+- comment: "forward_fasttrack"
+  order: posi
+  posi: '6'
+  chain: forward
+  connection_state: 'established,related'
+  action: 'fasttrack-connection'
+
+- comment: "FORWARD stablished"
+  order: posi
+  posi: '6'
+  chain: forward
+  connection_state: 'established,related,untracked'
+  action: 'accept'
+
+- comment: "INPUT stablished"
+  order: posi
+  posi: '7'
+  chain: input
+  connection_state: 'established,related,untracked'
+  action: 'accept'
+
+
+
+  

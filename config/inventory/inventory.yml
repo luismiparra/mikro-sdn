@@ -1,0 +1,701 @@
+#About CORE
+# - Core devices are designed to allow transit. 
+# - They are required to have a public IP that accepts connections from other peers to allow underlay wg tunnels works.
+# - A full mesh topology is expected between all cores
+
+core:
+  #name Name of router
+- name: "lab-mikro1" 
+  #site_id All sites need a unique ID between 1-200
+  site_id: 1
+  #Enable VXLAN feature
+  enable_vxlan: true
+  #enable_vxlan_to_vlan Add vxlan to vlan in bridge
+  enable_vxlan_to_vlan: true
+  #Device role (core/edge)
+  role: "core"
+  #Enable will consider the device as part of the WAN when generating WG tunnels.
+  enabled: True
+  #enabled Will push config to device, is possible to enable the device to make others create tunnels with this device but do not push config to device itself.
+  push_config: False
+  #push_clean will delete the configuration not created by the automation or that is not with the exclusion prefix.
+  push_clean: True
+  #cleanconfig if you enable cleanconfig, all config will be wipe except exclud prefix one
+  cleanconfig: False
+  #mgmt_ext Automation will use this ip/host to connect API and configure as secondary
+  mgmt_ext: "lab-mikro1.yourdomain.int"
+  #mgmt_ext Automation will use this ip/host to connect API and configure as primary
+  mgmt_int: "10.5.5.11"
+  #external_ddns enable mikro cloud ip ddns
+  external_ddns: false
+  #external_endpoint required in the cores. This is the host that the underlway wireguard will use to connect to this node externally. Also required for client vpn_wg
+  external_endpoint: "10.5.5.11"
+  #BGP AS number
+  as: '10'
+  #rp_external The rp_external variable has security implications. If it is set to false, that router will be considered a secure managed network and the forward traffic coming from its tunnels will be accepted at the destination by default.
+  rp_external: false
+  #core_priority allows traffic engineering within the backbone of core devices. If communication between 2 edges is activated, it will always choose a path with a priority core. This uses BGP prepend under the scene.
+  core_priority: true
+  #As its name indicates, it will send static IPv6 prefixes to its neighbors. Useful to indicate which is the output GW for the IPv6 network in case you use an IPv6 tunnel over IPv4
+  ipv6_advertise_static: false
+  #Core transit creates the structures as extra routing table to route the internet output via another core. This can be manipulated with FW mangle rules using the table "routing_table_internet_vpn". 
+  core_internet_transit: false
+  #location describe location for the node
+  location: "rptest1"
+  #gateway_number define the last octect number for each vlan interface 
+  gateway_number: 1 
+  #dhcp_pool_start start of pool for each vlan dhcp
+  dhcp_pool_start: 100
+  #dhcp_pool_end end of pool for each vlan dhcp
+  dhcp_pool_end: 250
+  #wg_mtu define the maximun MTU for wireguard tunnels
+  wg_mtu: '1280'
+  #domain search domain for DHCP server
+  domain: "yourdomain.int"
+  #dns1 internal network dns server 1
+  dns1: "8.8.8.8"
+  #dns2 internal network dns server 2
+  dns2: "8.8.4.4"
+  #dns1_fallback in case wg underlay cores are not available and your dns servers are hosted at core locations this will create a nat failback for DNS to keep your location users with internet.
+  dns1_fallback: "7.7.7.7"
+  #dns2_fallback in case wg underlay cores are not available and your dns servers are hosted at core locations this will create a nat failback for DNS to keep your location users with internet.
+  dns2_fallback: "6.6.6.6"
+  #internet_icmp_check1 create netwatch monitor
+  internet_icmp_check1: "8.8.4.4"
+  #internet_icmp_check2 create netwatch monitor
+  internet_icmp_check2: "8.8.8.8"
+  #ntp1 define ntp server
+  ntp1: "10.151.2.2"
+  #lease-time define DHCP lease time
+  lease-time: "1d"
+  #disable-ipv6 disable all ipv6 configs
+  disable-ipv6: "no"
+  #subnetv4 Define main ipv4 /16 network for each site, then all subnets will take the 3º octect as the vlan and split in /24. Last network used for wg tunnels
+  subnetv4: "10.151.0.0/16"  
+  #subnetv6 Define main ipv6 /96 network for each site, then all subnets will take the 3º octect as the vlan and split in /112. Last network used for wg tunnels
+  subnetv6: "1:0:0:0:10:151:0:0/96"
+  #subnetv6 Define main ipv6 /53 to use as slaac. This is requiered in configs where dhcpv6 is not available and need autoconfigure ipv6 in a subnet
+  subnetv6slaac: "1:0:0:8800:0000:0000:0000:0000/53"
+
+  #configlet: Is a list with the automations you want to execute. IF you create your own add it to the inventory list also
+  configlet:
+  - "general"
+  - "autoupdate"
+  - "internet"
+  - "wan" 
+  - "fw" 
+  - "netwatch"
+  - "wg_vpn"
+  - "lan"
+  - "dhcp"
+
+  #save_wg_files Just needed if WG client files need to be re-created this can consume some time of the automation and you can disable if no modifications after first run
+  save_wg_files: true
+  
+  #configlet wg_vpn requiere this config to create WG for final clients configs.
+  wg-vpn:
+      #id will device the subnet for WG starting at 10x example 10.A.B.C A=your site B=subnet(deine after) C= Client wg 
+    - id: 1
+      name: mgmt_vpn
+      #admin will give users on this subnet full fw access inbound and forward
+      admin: true
+      persistent_keepalive_enable: true
+      persistent_keepalive_seconds: '25'
+      #mgmt_vpn is design to be used as a OOB network with this automation. To make sure it survive to automation changes will add the unmutable prefix to all config and also rules to allow Inbound for MGMT at this device
+      mgmt_vpn: true
+      allowed_ips: '0.0.0.0/0, ::/0'
+      #disabled_peers allow you to disable peers by adding them to a list using the last octect
+      disabled_peers: [2,3]
+      #define wg base subnet
+      subnet: 100
+      #number_client define number of clients to generate
+      number_client: 10
+      #define listening port
+      port: 30001
+
+    - id: 2
+      name: admin_vpn1
+      admin: true
+      persistent_keepalive_enable: true
+      persistent_keepalive_seconds: '25' 
+      mgmt_vpn: false
+      allowed_ips: '0.0.0.0/0, ::/0'
+      disabled_peers: []
+      subnet: 101
+      #max 240
+      number_client: 10
+      port: 30002
+    - id: 3
+      name: user_vpn2
+      admin: false
+      persistent_keepalive_enable: true
+      persistent_keepalive_seconds: '25' 
+      mgmt_vpn: false
+      allowed_ips: '0.0.0.0/0, ::/0'
+      disabled_peers: []
+      subnet: 102
+      #max 240
+      number_client: 10
+      port: 30003
+
+  #lan define L2 networks vlans and associate them with ports as access port or trunk
+  lan:
+    #safe_ports list of ports in vlan 1 safe
+    safe_ports:
+    #trunk_ports list of ports in trunk mode
+    trunk_ports:
+      - 'ether3'
+    #access_ports define any vlan access ports by a list of a dict port and vlan
+    access_ports:
+      - port: 'ether2'
+        vlan: '1'
+
+    #issolated_trunk define if port trunk use native vlan 999
+    issolated_trunk: true
+
+    #Create L3 vlans and dhcp
+    vlans:
+        #id vlan id number
+      - id: 1
+        #name vlan name
+        name: 1safe
+        #ipv6 define if configure ipv6 on this vlan (ipv4 is always configured)
+        ipv6: true
+        ipv6slaac: false
+        #ipv4_vip_pool a pool of IPs that will be created as /32 ips that can be used as VIP using NAT
+        ipv4_vip_pool:
+        - '10.151.91.0/29'
+        ipv6_vip_pool:
+      - id: 2
+        name: 2dmz
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 3
+        name: 3services
+        ipv6: true
+        ipv6slaac: false
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 4
+        name: 4guest
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 5
+        name: 5lab
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+
+- name: "lab-mikro2"
+  site_id: 2
+  enable_vxlan: true
+  enable_vxlan_to_vlan: true
+  role: "core"
+  enabled: True
+  push_config: False
+  push_clean: True
+  cleanconfig: False
+  mgmt_ext: "lab-mikro2.yourdomain.int"
+  mgmt_int: "10.5.5.12"
+  external_ddns: true
+  external_endpoint: "lab-mikro2.yourdomain.int"
+  as: '20'
+  rp_external: false
+
+  core_priority: true
+  ipv6_advertise_static: false
+  core_internet_transit: false
+  location: "rptest2"
+  gateway_number: 1
+  dhcp_pool_start: 100
+  dhcp_pool_end: 250
+  wg_mtu: '1280'
+  domain: "yourdomain.int"
+  dns1: "8.8.8.8"
+  dns2: "8.8.4.4"
+  dns1_fallback: "7.7.7.7"
+  dns2_fallback: "6.6.6.6"
+  internet_icmp_check1: "8.8.4.4"
+  internet_icmp_check2: "8.8.8.8"
+  ntp1: "10.151.2.2"
+
+  lease-time: "1d"
+  disable-ipv6: "no"
+  #expected /16
+  subnetv4: "10.152.0.0/16"  
+  #expected /96
+  subnetv6: "1:0:0:0:10:152:0:0/96"
+  #expected /53
+  subnetv6slaac: "1:0:0:9000:0000:0000:0000:0000/53"
+  configlet:
+  - "general"
+  - "autoupdate"
+  - "internet"
+  - "wan" 
+  - "fw" 
+  - "netwatch"
+#
+
+#  - "wg_vpn"
+  - "lan"
+  - "dhcp"
+
+
+  lan:
+    safe_ports:
+      - 'ether2'    
+    trunk_ports:
+      - 'ether3'
+    issolated_trunk: true
+    vlans:
+      - id: 1
+        name: 1safe
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 2
+        name: 2dmz
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 3
+        name: 3services
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 4
+        name: 4guest
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 5
+        name: 5lab
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+
+- name: "lab-mikro3"
+  site_id: 3
+  enable_vxlan: true
+  enable_vxlan_to_vlan: true
+  role: "core"
+  enabled: True
+  push_config: False
+  push_clean: True
+  cleanconfig: False
+  mgmt_ext: "lab-mikro3.yourdomain.int"
+  mgmt_int: "10.5.5.13"
+  external_ddns: true
+  external_endpoint: "lab-mikro3.yourdomain.int"
+  as: '30'
+  rp_external: false
+
+  core_priority: false
+  ipv6_advertise_static: true
+  core_internet_transit: true
+  location: "rptest3"
+  gateway_number: 1
+  dhcp_pool_start: 100
+  dhcp_pool_end: 250
+  wg_mtu: '1280'
+  domain: "yourdomain.int"
+  dns1: "8.8.8.8"
+  dns2: "8.8.4.4"
+  dns1_fallback: "7.7.7.7"
+  dns2_fallback: "6.6.6.6"
+  internet_icmp_check1: "8.8.4.4"
+  internet_icmp_check2: "8.8.8.8"
+  ntp1: "10.151.2.2"
+
+  lease-time: "1d"
+  disable-ipv6: "no"
+  #expected /16
+  subnetv4: "10.153.0.0/16"  
+  #expected /96
+  subnetv6: "1:0:0:0:10:153:0:0/96"
+  #expected /53
+  subnetv6slaac: "1:0:0:9800:0000:0000:0000:0000/53"
+  configlet:
+  - "general"
+  - "autoupdate"
+  - "internet"
+  - "wan" 
+  - "fw" 
+  - "netwatch"
+#
+
+#  - "wg_vpn"
+  - "lan"
+  - "dhcp"
+
+
+  lan:
+    safe_ports:
+      - 'ether2'    
+    trunk_ports:
+    issolated_trunk: true
+    vlans:
+      - id: 1
+        name: 1safe
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 2
+        name: 2dmz
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 3
+        name: 3services
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 4
+        name: 4guest
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 5
+        name: 5lab
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+
+edge:
+- name: "lab-mikro4"
+  enable_vxlan: true
+  enable_vxlan_to_vlan: true
+  site_id: 4
+  role: "edge"
+  enabled: True
+  push_config: False
+  push_clean: True
+  cleanconfig: False
+  mgmt_ext: "lab-mikro4.yourdomain.int"
+  mgmt_int: "10.5.5.14"
+  external_ddns: true
+  external_endpoint: "lab-mikro4.yourdomain.int"
+  as: '40'
+  rp_external: false
+  ipv6_advertise_static: false
+  core_internet_transit: false
+  location: "rptest4"
+  gateway_number: 1
+  dhcp_pool_start: 100
+  dhcp_pool_end: 250
+  wg_mtu: '1280'
+  domain: "yourdomain.int"
+  dns1: "8.8.8.8"
+  dns2: "8.8.4.4"
+  dns1_fallback: "7.7.7.7"
+  dns2_fallback: "6.6.6.6"
+  internet_icmp_check1: "8.8.4.4"
+  internet_icmp_check2: "8.8.8.8"
+  ntp1: "10.151.2.2"
+
+  lease-time: "1d"
+  disable-ipv6: "no"
+  #expected /16
+  subnetv4: "10.154.0.0/16"  
+  #expected /96
+  subnetv6: "1:0:0:0:10:154:0:0/96"
+  #expected /53
+  subnetv6slaac: "1:0:0:b000:0000:0000:0000:0000/53"
+  configlet:
+  - "general"
+  - "autoupdate"
+  - "internet"
+  - "wan" 
+  - "fw" 
+  - "netwatch"
+#
+
+#  - "wg_vpn"
+  - "lan"
+  - "dhcp"
+
+  
+  lan:
+    safe_ports:
+    trunk_ports:
+      - 'ether3'
+    issolated_trunk: true
+    vlans:
+      - id: 1
+        name: 1safe
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 2
+        name: 2dmz
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 3
+        name: 3services
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 4
+        name: 4guest
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 5
+        name: 5lab
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+
+- name: "lab-mikro5"
+  site_id: 5
+  enable_vxlan: false
+  enable_vxlan_to_vlan: false
+  role: "edge"
+  enabled: True
+  push_config: False
+  push_clean: True
+  cleanconfig: False
+  mgmt_ext: "lab-mikro5.yourdomain.int"
+  mgmt_int: "10.5.5.15"
+  external_ddns: true
+  external_endpoint: "lab-mikro1.yourdomain.int"
+  as: '50'
+  rp_external: true
+  ipv6_advertise_static: false
+  core_internet_transit: false
+  location: "rptest5"
+  gateway_number: 1
+  dhcp_pool_start: 100
+  dhcp_pool_end: 250
+  wg_mtu: '1280'
+  domain: "yourdomain.int"
+  dns1: "8.8.8.8"
+  dns2: "8.8.4.4"
+  dns1_fallback: "7.7.7.7"
+  dns2_fallback: "6.6.6.6"
+  internet_icmp_check1: "8.8.4.4"
+  internet_icmp_check2: "8.8.8.8"
+  ntp1: "10.151.2.2"
+
+  lease-time: "1d"
+  disable-ipv6: "no"
+  #expected /16
+  subnetv4: "10.155.0.0/16"  
+  #expected /96
+  subnetv6: "1:0:0:0:10:155:0:0/96"
+  #expected /53
+  subnetv6slaac: "2600:70ff:f082:1000:0000:0000:0000:0000/53"
+  configlet:
+  - "general"
+  - "autoupdate"
+  - "internet"
+  - "wan" 
+  - "fw" 
+  - "netwatch"
+#
+
+#  - "wg_vpn"
+  - "lan"
+  - "dhcp"
+
+  lan:
+    safe_ports:
+      - 'ether2'    
+    trunk_ports:
+      - 'ether3'
+    issolated_trunk: true
+    vlans:
+      - id: 1
+        name: 1safe
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 2
+        name: 2dmz
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 3
+        name: 3services
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 4
+        name: 4guest
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 5
+        name: 5lab
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+
+- name: "lab-mikro6"
+  site_id: 6
+  enable_vxlan: true
+  enable_vxlan_to_vlan: false
+  role: "edge"
+  enabled: True
+  push_config: false
+  push_clean: false
+  cleanconfig: False
+  mgmt_ext: "10.5.1.86"
+  mgmt_int: "10.5.1.86"
+  external_ddns: true
+  external_endpoint: "10.5.1.86"
+  as: '60'
+  rp_external: true
+  ipv6_advertise_static: false
+  core_internet_transit: false
+  location: "rptest6"
+  gateway_number: 1
+  dhcp_pool_start: 100
+  dhcp_pool_end: 250
+  wg_mtu: '1280'
+  domain: "yourdomain.int"
+  dns1: "8.8.8.8"
+  dns2: "8.8.4.4"
+  dns1_fallback: "7.7.7.7"
+  dns2_fallback: "6.6.6.6"
+  internet_icmp_check1: "8.8.4.4"
+  internet_icmp_check2: "8.8.8.8"
+  ntp1: "10.151.2.2"
+
+  lease-time: "1d"
+  disable-ipv6: "no"
+  #expected /16
+  subnetv4: "10.156.0.0/16"  
+  #expected /96
+  subnetv6: "1:0:0:0:10:156:0:0/96"
+  #expected /53
+  subnetv6slaac: "1:0:0:a800:0000:0000:0000:0000/53"
+  configlet:
+  - "general"
+  - "autoupdate"
+  - "internet"
+  - "wan" 
+  - "fw" 
+  - "netwatch"
+
+
+#  - "wg_vpn"
+  - "lan"
+  - "dhcp"
+  - "wifi"
+
+  lan:
+    safe_ports:
+      - 'ether2'    
+    trunk_ports:
+      - 'ether3'
+    issolated_trunk: true
+    vlans:
+      - id: 1
+        name: 1safe
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 2
+        name: 2dmz
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 3
+        name: 3services
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 4
+        name: 4guest
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 5
+        name: 5lab
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+
+external_edge:
+- name: "externalhost1"
+  site_id: 7
+  role: "external_edge"
+  wg_mtu: '1280'
+  enabled: True
+  push_config: False
+  push_clean: True
+  cleanconfig: False
+  mgmt_ext: "10.222.1.1"
+  mgmt_int: "10.222.1.1"
+  as: '200'
+  external_wg_main_port: 61200
+  allow_out_prefix_v4: "10.222.222.200/32"
+  allow_out_prefix_v6: "1:0:0:0:10:222:0:0/96"
+  rp_external: false
+
+  location: "rptest200"
+  #expected /16
+  subnetv4: "10.222.0.0/16"  
+  #expected /96
+  subnetv6: "1:0:0:0:10:222:0:0/96"
+  #expected /53
+  subnetv6slaac: "1:0:0:a000:0000:0000:0000:0000/53"
+  configlet:
+  - "wan" 
+
+- name: "externalhost2"
+  site_id: 8
+  role: "external_edge"
+  wg_mtu: '1280'
+  enabled: True
+  push_config: False
+  push_clean: True
+  cleanconfig: False
+  mgmt_ext: "10.222.1.2"
+  mgmt_int: "10.222.1.2"
+  as: '202'
+  external_wg_main_port: 61202
+  allow_out_prefix_v4: "10.222.222.202/32"
+  allow_out_prefix_v6: "1:0:0:0:10:223:0:0/96"
+  rp_external: true
+  location: "rptest202"
+  #expected /16
+  subnetv4: "10.223.0.0/16"  
+  #expected /96
+  subnetv6: "1:0:0:0:10:223:0:0/96"
+  #expected /53
+  subnetv6slaac: "2001:470:c8b6:8000:0000:0000:0000:0000/53"
+  configlet:
+  - "wan" 

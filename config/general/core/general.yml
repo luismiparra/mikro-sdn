@@ -1,0 +1,122 @@
+#----------------------STATIC just update
+
+/snmp/community:
+- use_set: "false"
+  id: "*0"
+  name: "changeme123..."
+  addresses: "10.0.0.0/8"
+
+/ip/cloud:
+- use_set: "true"
+  ddns_enabled: 'yes'
+  ddns_update_interval: 10m
+
+/ip/dns:
+- use_set: "true"
+  allow_remote_requests: "no"
+
+/ip/service:
+- use_set: "true"
+  name: "telnet"
+  disabled: 'true'
+
+- use_set: "true"
+  name: "ftp"
+  disabled: 'true'
+  port: '21'
+
+- use_set: "true"
+  name: "www"
+  disabled: 'false'
+  port: '80'
+
+- use_set: "true"
+  name: "www-ssl"
+  disabled: 'false'
+  port: '443'
+  certificate: 'mycert.int.crt'
+
+- use_set: "true"
+  name: "api"
+  disabled: 'true'
+
+- use_set: "true"
+  name: "api-ssl"
+  disabled: 'false'
+  port: '8729'
+
+- use_set: "true"
+  name: "ssh"
+  disabled: 'false'
+  port: '22'
+
+#/ip/ssh:
+#- use_set: "true"
+#  host_key_size: '4096'
+#  strong_crypto: 'yes'
+
+/system/clock:
+- use_set: "true"
+  time_zone_name: "Europe/Madrid"
+
+/system/ntp/client:
+- use_set: "true"  
+  enabled: 'yes'
+
+/system/ntp/client/servers:
+- comment: "rp-ntp"  
+  use_set: "false"  
+  address: "0.es.pool.ntp.org"
+
+/system/identity:
+- use_set: "true"
+
+/snmp:
+- use_set: "true"
+  contact: "admin@yourdomain.com"
+  enabled: "yes"
+  #location: in code
+
+/ip/traffic-flow:
+- use_set: "true"
+  enabled: 'yes'
+
+/ip/traffic-flow/target:
+- use_set: "true"
+  numbers: '0'
+  dst-address: '10.155.2.2'
+  port: '4739'
+  version: ipfix
+  vlan_src: '1'
+
+  #src-address: in code
+
+/system/logging:
+- use_set: "true"
+  numbers: '4'  #4 is mandatory after the defauls
+  action: "remote"
+  topics: "!debug"
+
+
+
+/system/logging/action:
+- use_set: "true"
+  numbers: '3'
+  remote: "10.1.2.2"
+  remote_port: "514"
+  vlan_src: '1'
+  #src-address_ in code
+
+#BFD
+/routing/bfd/configuration:
+- use_set: "false"
+  comment: 'bfd_wireguard_interfaces'
+  disabled: "false"
+  multiplier: "25"
+  interfaces: "list_wireguard_main"
+- use_set: "false"
+  comment: 'bfd_any'
+  disabled: "false"
+  multiplier: "25"
+
+

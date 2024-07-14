@@ -1,0 +1,13 @@
+#CHANGES FILE MODE:
+##PUSH MODE REAL
+##DEVICE lab-mikro1
+##PUSH MODE REAL
+##DEVICE lab-mikro2
+##PUSH MODE REAL
+##DEVICE lab-mikro3
+##PUSH MODE REAL
+##DEVICE lab-mikro4
+##PUSH MODE REAL
+##DEVICE lab-mikro5
+##PUSH MODE REAL
+##DEVICE lab-mikro6

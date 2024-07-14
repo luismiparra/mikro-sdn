@@ -1,0 +1,23 @@
+/ipv6/firewall/filter:
+- comment: "local_v6_mgmt"
+  order: top
+  chain: input
+  src_address_list: SET_HOSTS6_ALLOW_MGMT
+  dst_port: '22,8291,8729'
+  protocol: tcp
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "inputv6_monitoring"
+  order: top
+  chain: input
+  src_address_list: SET_HOSTS6_MONITORING
+  dst_port: '161'
+  protocol: udp
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'
+
