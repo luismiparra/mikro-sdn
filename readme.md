@@ -6,8 +6,8 @@
 # Configuration Guide for mikro-sdn inventory Config.
 
 This documentation provides guidelines for configuring CORE/EDGE devices using the given YAML configuration structure. 
-CORE devices are designed to allow transit and are required to have a public IP that accepts connections from other peers to facilitate underlay WireGuard (WG) tunnels. A full mesh topology is expected between all CORE devices.
-EDGE devices will connect to each core.
+- **CORE devices** are designed to allow transit and are required to have a public IP that accepts connections from other peers to facilitate underlay WireGuard (WG) tunnels. A full mesh topology is expected between all CORE devices.
+- **EDGE devices** will connect to each core.
 
 
 # How to install and run offline: (no push to devices yet)
