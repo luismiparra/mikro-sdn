@@ -3,94 +3,94 @@
 #-------------------------------------icmp
 #DENY
 
-- comment: "input_internal_icmpv6_deny"
+- comment: "v6_input_reject_icmpv6_private"
   order: bot
   chain: input
-  src_address_list: SET_NET6_PRIVATE
+  src_address_list: ACL6_NETS_PRIVATE
   protocol: icmpv6
   log: 'true'
-  log_prefix: 'FW=in_reject T=icmp S=PRIV IPV=6 '
+  log_prefix: 'FW=in_reject T=icmp S=PRIV'
   disabled: 'false'
   action: 'reject'
   reject_with: 'icmp-admin-prohibited'
 
-- comment: "forward_internal_icmpv6_deny"
+- comment: "v6_forward_reject_icmpv6_private"
   order: bot
   chain: forward
-  src_address_list: SET_NET6_PRIVATE
+  src_address_list: ACL6_NETS_PRIVATE
   protocol: icmpv6
   log: 'true'
-  log_prefix: 'FW=fw_reject T=icmp S=PRIV IPV=6 '
+  log_prefix: 'FW=fw_reject T=icmp S=PRIV'
   disabled: 'false'
   action: 'reject'
   reject_with: 'icmp-admin-prohibited'
 
-- comment: "input_public_icmpv6_deny"
+- comment: "v6_input_drop_icmpv6"
   order: bot
   chain: input
   protocol: icmpv6
   log: 'true'
-  log_prefix: 'FW=in_reject T=icmp S=PUB IPV=6 '
+  log_prefix: 'FW=in_reject T=icmp S=PUB'
   disabled: 'false'
   action: 'drop'
 
-- comment: "forward_public_icmpv6_deny"
+- comment: "v6_forward_drop_icmpv6"
   order: bot
   chain: forward
   protocol: icmpv6
   log: 'true'
-  log_prefix: 'FW=fw_reject T=icmp S=PUB IPV=6 '
+  log_prefix: 'FW=fw_reject T=icmp S=PUB'
   disabled: 'false'
   action: 'drop' 
 
 
 #-------------------------------------ssh
 
-- comment: "inputv6_internal_ssh_deny"
+- comment: "v6_input_reject_tcp_private"
   order: bot
   chain: input
-  src_address_list: SET_NET6_PRIVATE
+  src_address_list: ACL6_NETS_PRIVATE
   dst_port: '22'
   protocol: tcp
   log: 'true'
-  log_prefix: 'FW=in_reject T=SSH S=PRIV IPV=6 '
+  log_prefix: 'FW=in_reject T=SSH S=PRIV'
   disabled: 'false'
   action: 'reject'
   reject_with: 'icmp-admin-prohibited'
 
-- comment: "forwardv6_internal_ssh_deny"
+- comment: "v6_forward_reject_tcp_private"
   order: bot
   chain: forward
-  src_address_list: SET_NET6_PRIVATE
+  src_address_list: ACL6_NETS_PRIVATE
   dst_port: '22'
   protocol: tcp
   log: 'true'
-  log_prefix: 'FW=fw_reject T=SSH S=PRIV IPV=6 '
+  log_prefix: 'FW=fw_reject T=SSH S=PRIV'
   disabled: 'false'
   action: 'reject'
   reject_with: 'icmp-admin-prohibited'
 
 
-- comment: "intputv6_public_ssh_deny"
+- comment: "v6_input_drop_tcp_internet"
   order: bot
   chain: input
-  src_address_list: SET_NET6_INTERNET
+  src_address_list: ACL6_NETS_INTERNET
   dst_port: '22'
   protocol: tcp
   log: 'true'
-  log_prefix: 'FW=in_drop T=SSH S=PUB IPV=6 '
+  log_prefix: 'FW=in_drop T=SSH S=PUB'
   disabled: 'false'
   action: 'drop'
 
 
-- comment: "forwardv6_public_ssh_deny"
+- comment: "v6_forward_drop_tcp_internet"
   order: bot
   chain: forward
-  src_address_list: SET_NET6_INTERNET
+  src_address_list: ACL6_NETS_INTERNET
   dst_port: '22'
   protocol: tcp
   log: 'true'
-  log_prefix: 'FW=fw_drop T=SSH S=PUB IPV=6 '
+  log_prefix: 'FW=fw_drop T=SSH S=PUB'
   disabled: 'false'
   action: 'drop'
 
@@ -101,37 +101,37 @@
 
 #NO LOG SPECIFIC
 
-- comment: "inputv6_src_nolog_deny"
+- comment: "v6_input_drop_nolog"
   order: bot
   chain: input
-  src_address_list: SET_NET6_NOLOG
+  src_address_list: ACL6_NETS_NOLOG
   log: 'false'
   log_prefix: 'no'
   disabled: 'false'
   action: 'drop'
 
-- comment: "forwardv6_src_nolog_deny"
+- comment: "v6_forward_drop_nolog"
   order: bot
   chain: forward
-  src_address_list: SET_NET6_NOLOG
+  src_address_list: ACL6_NETS_NOLOG
   log: 'false'
   log_prefix: 'no'
   disabled: 'false'
   action: 'drop'
 
-- comment: "inputv6_dst_nolog_deny"
+- comment: "v6_input_drop_nolog_2"
   order: bot
   chain: input
-  dst_address_list: SET_NET6_NOLOG
+  dst_address_list: ACL6_NETS_NOLOG
   log: 'false'
   log_prefix: 'no'
   disabled: 'false'
   action: 'drop'
 
-- comment: "forwardv6_dst_nolog_deny"
+- comment: "v6_forward_drop_nolog_2"
   order: bot
   chain: forward
-  dst_address_list: SET_NET6_NOLOG
+  dst_address_list: ACL6_NETS_NOLOG
   log: 'false'
   log_prefix: 'no'
   disabled: 'false'
@@ -140,10 +140,10 @@
 
 #NO LOG INVALID
 
-- comment: "intputv6_invalid_public_deny"
+- comment: "v6_input_drop_internet"
   order: bot
   chain: input
-  src_address_list: SET_NET6_INTERNET
+  src_address_list: ACL6_NETS_INTERNET
   log: 'false'
   log_prefix: 'no'
   connection_state: 'invalid'
@@ -151,10 +151,10 @@
   action: 'drop'
 
 
-- comment: "forwardv6_invalid_public_deny"
+- comment: "v6_forward_drop_internet"
   order: bot
   chain: forward
-  src_address_list: SET_NET6_INTERNET
+  src_address_list: ACL6_NETS_INTERNET
   log: 'false'
   log_prefix: 'no'
   connection_state: 'invalid'
@@ -164,42 +164,42 @@
 #-------------------------------------GROBAL DROP
 
 
-- comment: "inputv6_internal_deny"
+- comment: "v6_input_reject_private"
   order: bot
   chain: input
-  src_address_list: SET_NET6_PRIVATE
+  src_address_list: ACL6_NETS_PRIVATE
   log: 'true'
-  log_prefix: 'FW=in_reject S=PRIV IPV=6 '
+  log_prefix: 'FW=in_reject S=PRIV'
   disabled: 'false'
   action: 'reject'
   reject_with: 'icmp-admin-prohibited'
 
-- comment: "forwardv6_internal_deny"
+- comment: "v6_forward_reject_private"
   order: bot
   chain: forward
-  src_address_list: SET_NET6_PRIVATE
+  src_address_list: ACL6_NETS_PRIVATE
   log: 'true'
-  log_prefix: 'FW=fw_reject S=PRIV IPV=6 '
+  log_prefix: 'FW=fw_reject S=PRIV'
   disabled: 'false'
   action: 'reject'
   reject_with: 'icmp-admin-prohibited'
 
 #    public
-- comment: "intputv6_public_deny"
+- comment: "v6_input_drop_internet_2"
   order: bot
   chain: input
-  src_address_list: SET_NET6_INTERNET
+  src_address_list: ACL6_NETS_INTERNET
   log: 'true'
-  log_prefix: 'FW=in_drop S=PUB IPV=6 '
+  log_prefix: 'FW=in_drop S=PUB'
   disabled: 'false'
   action: 'drop'
 
 
-- comment: "forwardv6_public_deny"
+- comment: "v6_forward_drop_internet_2"
   order: bot
   chain: forward
-  src_address_list: SET_NET6_INTERNET
+  src_address_list: ACL6_NETS_INTERNET
   log: 'true'
-  log_prefix: 'FW=fw_drop S=PUB IPV=6 '
+  log_prefix: 'FW=fw_drop S=PUB'
   disabled: 'false'
   action: 'drop'

@@ -1,0 +1,14 @@
+
+/ip/firewall/filter:
+
+- comment: "v4_forward_accept_tcp_storage"
+  order: top
+  chain: forward
+  src_address_list: ACL4_HOSTS_VPN_USERS
+  dst_address_list: ACL4_HOSTS_STORAGE
+  dst_port: '80,139,443,445,5000,5001'
+  protocol: tcp
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'

@@ -1,49 +1,43 @@
 /ip/firewall/filter:
-
-# -------------------------------------------------
-# The following configuration is just an example.
-# You need to create the files for your needs.
-# -------------------------------------------------
-
-- comment: "rpban_input_frominside_log"
+- comment: "v4_input_log_banned"
   order: posi
   posi: '1'
   chain: input
-  src_address_list: SET_NET4_PRIVATE
-  dst_address_list: rp-ban-v4
+  src_address_list: ACL4_NETS_PRIVATE
+  dst_address_list: ACL4_BANNED
   log: 'true'
-  log_prefix: 'RPLOG=rpnftables RPTYPE=insideTOban RPSCOPE=private IPV=4 RPINFO=none ACTION=log'
+  log_prefix: 'FW=ban_log T=to_banned S=PRIV'
   disabled: 'false'
   action: 'log'
 
-- comment: "rpban_forward_frominside_log"
+- comment: "v4_forward_log_banned"
   order: posi
   posi: '2'
   chain: forward
-  src_address_list: SET_NET4_PRIVATE
-  dst_address_list: rp-ban-v4
+  src_address_list: ACL4_NETS_PRIVATE
+  dst_address_list: ACL4_BANNED
   log: 'true'
-  log_prefix: 'RPLOG=rpnftables RPTYPE=insideTOban RPSCOPE=private IPV=4 RPINFO=none ACTION=log'
+  log_prefix: 'FW=ban_log T=to_banned S=PRIV'
   disabled: 'false'
   action: 'log'
 
-- comment: "rpban_input"
+- comment: "v4_input_drop_banned"
   order: posi
   posi: '3'
   chain: input
-  src_address_list: rp-ban-v4
+  src_address_list: ACL4_BANNED
   log: 'true'
-  log_prefix: 'RPLOG=rpnftables RPTYPE=rpban RPSCOPE=public IPV=4 RPINFO=none ACTION=drop'
+  log_prefix: 'FW=ban_drop S=PUB'
   disabled: 'false'
   action: 'drop'
 
-- comment: "rpban_forward"
+- comment: "v4_forward_drop_banned"
   order: posi
   posi: '4'
   chain: forward
-  src_address_list: rp-ban-v4
+  src_address_list: ACL4_BANNED
   log: 'true'
-  log_prefix: 'RPLOG=rpnftables RPTYPE=rpban RPSCOPE=public IPV=4 RPINFO=none ACTION=drop'
+  log_prefix: 'FW=ban_drop S=PUB'
   disabled: 'false'
   action: 'drop'
 

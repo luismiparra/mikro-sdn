@@ -3,7 +3,7 @@
 /snmp/community:
 - use_set: "false"
   id: "*0"
-  name: "changeme123..."
+  name: "change_me_snmp_community"
   addresses: "10.0.0.0/8"
 
 /ip/cloud:
@@ -34,7 +34,7 @@
   name: "www-ssl"
   disabled: 'false'
   port: '443'
-  certificate: 'mycert.int.crt'
+  certificate: 'example.int.crt'
 
 - use_set: "true"
   name: "api"
@@ -57,23 +57,23 @@
 
 /system/clock:
 - use_set: "true"
-  time_zone_name: "Europe/Madrid"
+  time_zone_name: "Etc/UTC"
 
 /system/ntp/client:
 - use_set: "true"  
   enabled: 'yes'
 
 /system/ntp/client/servers:
-- comment: "rp-ntp"  
+- comment: "ntp-pool"  
   use_set: "false"  
-  address: "0.es.pool.ntp.org"
+  address: "pool.ntp.org"
 
 /system/identity:
 - use_set: "true"
 
 /snmp:
 - use_set: "true"
-  contact: "admin@yourdomain.com"
+  contact: "admin@example.com"
   enabled: "yes"
   #location: in code
 
@@ -84,7 +84,7 @@
 /ip/traffic-flow/target:
 - use_set: "true"
   numbers: '0'
-  dst-address: '10.155.2.2'
+  dst-address: '10.21.3.30'
   port: '4739'
   version: ipfix
   vlan_src: '1'
@@ -93,16 +93,17 @@
 
 /system/logging:
 - use_set: "true"
-  numbers: '4'  #4 is mandatory after the defauls
+  numbers: '4'  #4 is mandatory after the defaults
   action: "remote"
   topics: "!debug"
 
+  #Done to here -----------------------------------need to fix id and logic src
 
 
 /system/logging/action:
 - use_set: "true"
   numbers: '3'
-  remote: "10.1.2.2"
+  remote: "10.21.3.10"
   remote_port: "514"
   vlan_src: '1'
   #src-address_ in code
@@ -110,12 +111,12 @@
 #BFD
 /routing/bfd/configuration:
 - use_set: "false"
-  comment: 'bfd_wireguard_interfaces'
+  comment: 'bfd_wan_links'
   disabled: "false"
   multiplier: "25"
   interfaces: "list_wireguard_main"
 - use_set: "false"
-  comment: 'bfd_any'
+  comment: 'bfd_default'
   disabled: "false"
   multiplier: "25"
 

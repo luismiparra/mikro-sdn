@@ -1,32 +1,33 @@
 #MANUAL STEPS:
 #1) Reset password and create admin
 #2) Create api user
-#3) Create mikroread user
-#4) Update files:
+#3) Create read only user (monitoring)
+#4) Upload files:
 #----last software version
-#----user-manager mikrotik
-#----yourdomain.int.crt
-#----yourdomain.int.key
-#----radius.yourdomain.int.crt
-#----radius.yourdomain.int.key
-#----yourdomain_INT_CA.crt
+#----user-manager package (only for the radius_server configlet)
+#----{{domain}}.crt
+#----{{domain}}.key
+#----radius.{{domain}}.crt
+#----radius.{{domain}}.key
+#----{{org_name}}_CA.crt
 #-------------------------------------------------------------------
 
 #SCRIPT CLI STEPS:
 
 system/reboot
 
-certificate/import file-name=yourdomain_INT_CA.crt name=yourdomain_INT_CA.crt passphrase=""
-certificate/import file-name=radius.yourdomain.int.crt name=radius.yourdomain.int.crt passphrase=""
-certificate/import file-name=radius.yourdomain.int.key name=radius.yourdomain.int.key passphrase=""
-certificate/import file-name=yourdomain.int.crt name=yourdomain.int.crt passphrase=""
-certificate/import file-name=yourdomain.int.key name=yourdomain.int.key passphrase=""
+certificate/import file-name={{org_name}}_CA.crt name={{org_name}}_CA.crt passphrase=""
+certificate/import file-name=radius.{{domain}}.crt name=radius.{{domain}}.crt passphrase=""
+certificate/import file-name=radius.{{domain}}.key name=radius.{{domain}}.key passphrase=""
+certificate/import file-name={{domain}}.crt name={{domain}}.crt passphrase=""
+certificate/import file-name={{domain}}.key name={{domain}}.key passphrase=""
 
 /ip/firewall/address-list
-add address=10.203.100.200 comment=local_rp_SET_ALLOW_VPN_MGMT list=local_rp_SET_ALLOW_VPN_MGMT
-add address=10.203.100.201 comment=local_rp_SET_ALLOW_VPN_MGMT list=local_rp_SET_ALLOW_VPN_MGMT
+{% for host in mgmt_hosts -%}
+add address={{host}} comment={{localstring}}ACL4_ONBOARD_MGMT list={{localstring}}ACL4_ONBOARD_MGMT
+{% endfor -%}
 /ip/firewall/filter
-add action=accept chain=input comment=local_rp_INPUT_ALLOW_VPN_MGMT src-address-list=local_rp_SET_ALLOW_VPN_MGMT
+add action=accept chain=input comment={{localstring}}INPUT_ALLOW_VPN_MGMT src-address-list={{localstring}}ACL4_ONBOARD_MGMT
 
 /interface wireguard
 add comment={{wg_comment}} mtu=1420 name={{wg_name}} private-key="{{wg_private_key}}"

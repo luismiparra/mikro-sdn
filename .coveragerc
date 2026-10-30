@@ -1,0 +1,10 @@
+[run]
+source =
+    1-mikro-auto
+    2-mikro-monitoring
+    3-mikro-webportal
+    4-netbox
+
+[report]
+fail_under = 95
+show_missing = true

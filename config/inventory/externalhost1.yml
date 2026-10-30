@@ -1,0 +1,38 @@
+external_edge:
+- name: "externalhost1"
+  #Pins the wireguard slot of every link of this device (listen port 51820+slot and transit subnet).
+  #Do not change on a deployed device, it moves ports and transit ips on both ends of every link.
+  wan_order: 6
+  site_id: 7
+  description: "lab external edge 1"
+  role: "external_edge"
+  wg_mtu: '1280'
+  use_bfd: True
+  enabled: True
+  push_config: True
+  push_clean: True
+  clean_config: False
+  device_model:  
+  mgmt_ext: "10.91.1.1"
+  mgmt_int: "10.91.1.1"
+  as: '65300'
+  external_wg_main_port: 61200
+  allow_out_prefix_v4: "10.91.222.200/32"
+  allow_out_prefix_v6: "2001:db8:10:0:10:91:0:0/96"
+  backbone_untrusted: false
+  radius_core: false
+  location: "labsite200"
+  #expected /16
+  subnetv4: "10.91.0.0/16"  
+  #expected /96
+  subnetv6: "2001:db8:10:0:10:91:0:0/96"
+  #expected /53
+  subnetv6slaac: "2001:db8:10:a000:0000:0000:0000:0000/53"
+  configlet:
+  - "wan" 
+  netbox:
+    device:
+      device_model: mikrotik-chr
+    organization:
+      region: "LAB"
+      site_group: site_lab

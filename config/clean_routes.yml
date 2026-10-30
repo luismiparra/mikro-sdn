@@ -18,10 +18,16 @@
 - /system/scheduler
 - /routing/filter/rule
 - /routing/bgp/connection
+- /routing/bgp/instance
 - /ip/dhcp-server/lease
 - /routing/table
 - /routing/rule
 - /ip/route
+- /radius
+- /interface/wireless
+- /interface/wireless/access-list
+- /interface/wireless/security-profiles
 - /user-manager/user
 - /user-manager/router
 - /tool/netwatch
+- /routing/bfd/configuration

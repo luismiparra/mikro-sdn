@@ -1,0 +1,154 @@
+core:
+- name: "lab-mikro1"
+  #Pins the wireguard slot of every link of this device (listen port 51820+slot and transit subnet).
+  #Do not change on a deployed device, it moves ports and transit ips on both ends of every link.
+  wan_order: 0
+  site_id: 1
+  monitoring: true
+  wifi_profile: "wifi"
+  enable_vxlan: true
+  enable_vxlan_to_vlan: true
+  api_version: 720
+  mqtt_netwatch_monitor: true
+  description: "lab core 1"
+  role: "core"
+  use_bfd: True
+  enabled: True
+  push_config: True
+  push_clean: True
+  clean_config: False
+  device_model:  
+  mgmt_ext: "lab-mikro1.example.int"
+  mgmt_int: "192.168.88.11"
+  external_ddns: false
+  external_endpoint: "192.168.88.11"
+  as: '65110'
+  backbone_untrusted: false
+  radius_core: false
+  core_priority: true
+  ipv6_advertise_static: false
+  core_internet_transit: false
+  location: "labsite1"
+  gateway_number: 1 
+  dhcp_pool_start: 100
+  dhcp_pool_end: 250
+  wg_mtu: '1280'
+  domain: "example.int"
+  dns1: "8.8.8.8"
+  dns2: "8.8.4.4"
+  dns1_fallback: "7.7.7.7"
+  dns2_fallback: "6.6.6.6"
+  internet_icmp_check1: "1.1.1.1"
+  internet_icmp_check2: "8.8.8.8"
+  ntp1: "10.21.3.10"
+  netbox:
+    device:
+      device_model: mikrotik-chr
+    organization:
+      region: "LAB"
+      site_group: site_lab
+
+
+  lease-time: "1d"
+  disable-ipv6: "no"
+  #expected /16
+  subnetv4: "10.21.0.0/16"  
+  #expected /96
+  subnetv6: "2001:db8:10:0:10:21:0:0/96"
+  #expected /53
+  subnetv6slaac: "2001:db8:10:8800:0000:0000:0000:0000/53"
+  configlet:
+  - "general"
+  - "autoupdate"
+  - "internet"
+  - "wan" 
+  - "fw" 
+  - "netwatch"
+  - "radius_server" 
+
+  - "wg_vpn"
+  - "lan"
+  - "dhcp"
+#  - "wifi"
+
+  save_wg_files: false
+  
+  wg-vpn:
+    - id: 1
+      name: mgmt_vpn
+      admin: true
+      persistent_keepalive_enable: true
+      persistent_keepalive_seconds: '25' 
+      mgmt_vpn: true
+      allowed_ips: '0.0.0.0/0, ::/0'
+      disabled_peers: [2,3]
+      subnet: 100
+      #max 240
+      number_client: 10
+      port: 30001
+    - id: 2
+      name: admin_vpn1
+      admin: true
+      persistent_keepalive_enable: true
+      persistent_keepalive_seconds: '25' 
+      mgmt_vpn: false
+      allowed_ips: '0.0.0.0/0, ::/0'
+      disabled_peers: []
+      subnet: 101
+      #max 240
+      number_client: 10
+      port: 30002
+    - id: 3
+      name: user_vpn2
+      admin: false
+      persistent_keepalive_enable: true
+      persistent_keepalive_seconds: '25' 
+      mgmt_vpn: false
+      allowed_ips: '0.0.0.0/0, ::/0'
+      disabled_peers: []
+      subnet: 102
+      #max 240
+      number_client: 10
+      port: 30003
+
+  lan:
+    safe_ports:
+    trunk_ports:
+      - 'ether3'
+    access_ports:
+      - port: 'ether2'
+        vlan: '1'
+
+
+    isolated_trunk: true
+    vlans:
+      - id: 1
+        name: 1safe
+        ipv6: true
+        ipv6slaac: false
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 2
+        name: 2dmz
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 3
+        name: 3services
+        ipv6: true
+        ipv6slaac: false
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 4
+        name: 4guest
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:
+      - id: 5
+        name: 5lab
+        ipv6: true
+        ipv6slaac: true
+        ipv4_vip_pool:
+        ipv6_vip_pool:

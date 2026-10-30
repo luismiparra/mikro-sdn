@@ -1,15 +1,115 @@
-
-
 /ipv6/firewall/address-list:
 
-# -------------------------------------------------
-# The following configuration is just an example.
-# You need to create the files for your needs.
-# -------------------------------------------------
+# -------------------------------------------------------------------------------------------------
+# IPv6 address lists of the LAB network (example values, documentation prefix 2001:db8::/32).
+# Site N routed block 2001:db8:10:0:10:2N::/96, vlan V -> 2001:db8:10:0:10:2N:V:0/112
+# -------------------------------------------------------------------------------------------------
 
-- comment: "SET_NET6_NOLOG"
-  address: 
+- comment: "ACL6_NETS_NOLOG"
+  address:
   - '::1/128'
   - 'ff02::1/128'
   - 'ff02::1:2/128'
   - 'ff00::/8'
+
+#Destinations blocked over IPv6 (example: a service that misbehaves over IPv6)
+- comment: "ACL6_NETS_BLOCKED"
+  address:
+  - '2001:db8:ffff:1::/64'
+
+#WireGuard endpoints reachable from the internet over IPv6
+- comment: "ACL6_HOSTS_WG_ENDPOINTS"
+  address:
+  - '2001:db8:10:0:10:21:fa:2/128'
+
+- comment: "ACL6_NETS_SITES"
+  address:
+  - '2001:db8:10:0:10:21::/96'
+  - '2001:db8:10:0:10:22::/96'
+  - '2001:db8:10:0:10:23::/96'
+  - '2001:db8:10:0:10:24::/96'
+  - '2001:db8:10:0:10:25::/96'
+  - '2001:db8:10:0:10:26::/96'
+  - '2001:db8:10:8000::/49'     #SLAAC blocks of every site
+
+- comment: "ACL6_NETS_TRUSTED"
+  address:
+  - '2001:db8:10:0:10:21:1:0/112'
+  - '2001:db8:10:9801::/64'
+  - '2001:db8:10:0:10:22:1:0/112'
+  - '2001:db8:10:9001::/64'
+  - '2001:db8:10:0:10:23:1:0/112'
+  - '2001:db8:10:b001::/64'
+
+- comment: "ACL6_NETS_PRIVATE"
+  address:
+  - '2001:db8:10::/48'
+  - 'fc00::/7'
+  - 'ff00::/8'
+
+- comment: "ACL6_HOSTS_MGMT"
+  address:
+  - '2001:db8:10:0:10:21:1:0/112'
+  - '2001:db8:10:0:10:21:64:0/112'   #management VPN
+
+- comment: "ACL6_NETS_INTERNET"
+  address:
+  - '::/0'
+  - '2000::/3'
+
+- comment: "ACL6_HOSTS_MONITORING"
+  address:
+  - '2001:db8:10:0:10:21:3:30/128'
+
+- comment: "ACL6_NETS_DMZ"
+  address:
+  - '2001:db8:10:0:10:21:2:0/112'
+  - '2001:db8:10:0:10:22:2:0/112'
+
+- comment: "ACL6_HOSTS_NTP"
+  address:
+  - '2001:db8:10:0:10:21:3:10/128'
+
+- comment: "ACL6_HOSTS_SYSLOG"
+  address:
+  - '2001:db8:10:0:10:21:3:10/128'
+
+- comment: "ACL6_HOSTS_DNS"
+  address:
+  - '2001:db8:10:0:10:21:3:53/128'
+  - '2001:db8:10:0:10:22:3:53/128'
+
+- comment: "ACL6_HOSTS_WEB"
+  address:
+  - '2001:db8:10:0:10:21:2:80/128'
+
+- comment: "ACL6_HOSTS_RADIUS_SERVERS"
+  address:
+  - '2001:db8:10:0:10:21:1:1/128'
+
+- comment: "ACL6_HOSTS_RADIUS_CLIENTS"
+  address:
+  - '2001:db8:10:0:10:24:1:1/128'
+
+- comment: "ACL6_HOSTS_NETFLOW"
+  address:
+  - '2001:db8:10:0:10:21:1:1/128'
+  - '2001:db8:10:0:10:22:1:1/128'
+  - '2001:db8:10:0:10:23:1:1/128'
+
+- comment: "ACL6_HOSTS_APPS_DMZ"
+  address:
+  - '2001:db8:10:0:10:21:2:20/128'
+
+- comment: "ACL6_HOSTS_APPS_TRUSTED"
+  address:
+  - '2001:db8:10:0:10:21:1:20/128'
+
+- comment: "ACL6_HOSTS_STORAGE"
+  address:
+  - '2001:db8:10:0:10:21:3:40/128'
+
+- comment: "ACL6_HOSTS_STORAGE_CLIENTS"
+  address:
+  - '2001:db8:10:0:10:21:2:20/128'
+  - '2001:db8:10:0:10:21:1:20/128'

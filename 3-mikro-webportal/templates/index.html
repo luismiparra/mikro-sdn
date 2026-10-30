@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+{% set pihole_on = not piholestatus.startswith('Off') %}
+{% set vpn_on = vpnstatus.startswith('On') %}
+
+<section class="hero">
+    <h1>Hello 👋</h1>
+    <p>Manage the ad filter and the VPN of your connection.</p>
+</section>
+
+<div class="cards">
+    <article class="card">
+        <div class="card__head">
+            <div class="card__icon">🛡️</div>
+            <div>
+                <h2>Ad filter</h2>
+                <span class="badge {{ 'badge--on' if pihole_on else 'badge--off' }}">{{ piholestatus }}</span>
+            </div>
+        </div>
+        <p class="card__text">Blocks ads and trackers. For safety it can only be turned off for 24 hours or 30 days; then it turns itself back on.</p>
+        <div class="actions">
+            <a class="btn btn--green" href="enable_pihole">Turn filter on</a>
+            <a class="btn btn--amber" href="disable_pihole">Off for 24 h</a>
+            <a class="btn btn--red" href="disable_pihole_forever">Off for 30 days</a>
+        </div>
+    </article>
+
+    <article class="card">
+        <div class="card__head">
+            <div class="card__icon">🌍</div>
+            <div>
+                <h2>VPN exit</h2>
+                <span class="badge {{ 'badge--on' if vpn_on else 'badge--neutral' }}">{{ vpnstatus }}</span>
+            </div>
+        </div>
+        <p class="card__text">Route your internet traffic through the VPN exit of another site.</p>
+        <div class="actions">
+            <a class="btn btn--blue" href="enable_vpn">Turn VPN on</a>
+            <a class="btn btn--ghost" href="disable_vpn">Turn VPN off</a>
+        </div>
+    </article>
+</div>
+{% endblock %}

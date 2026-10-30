@@ -1,0 +1,33 @@
+/ipv6/firewall/filter:
+- comment: "v6_forward_accept_tcp"
+  order: top
+  chain: forward
+  dst_address: '2001:db8:10:0:10:1:2:4/128'
+  dst_port: '80,443'
+  protocol: tcp
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "v6_forward_accept_tcp_2"
+  order: top
+  chain: forward
+  dst_address: '2001:db8:10:0:10:5:2:4/128'
+  dst_port: '80,443'
+  protocol: tcp
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "v6_forward_accept_udp_wg_endpoints"
+  order: top
+  chain: forward
+  dst_address_list: 'ACL6_HOSTS_WG_ENDPOINTS'
+  dst_port: '3000-3010,51820-51900'
+  protocol: udp
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'

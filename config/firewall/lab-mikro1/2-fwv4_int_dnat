@@ -1,6 +1,6 @@
 /ip/firewall/nat:
 
-- comment: "example_of_nat_rule1"
+- comment: "v4_nat_dstnat_udp"
   order: top
   chain: dstnat
   in_interface: ether1
@@ -12,12 +12,12 @@
   disabled: 'false'
   action: 'dst-nat'
 
-- comment: "example_of_nat_rule2"
+- comment: "v4_nat_dstnat_tcp"
   order: top
   chain: dstnat
   in_interface: ether1
   dst_port: '10811'
-  to_addresses: '10.5.2.15'
+  to_addresses: '10.21.2.20'
   protocol: tcp
   log: 'false'
   log_prefix: 'no'

@@ -1,0 +1,8 @@
+#Users of the RouterOS user-manager (configlet radius_server).
+#One entry per user. shared_users = how many devices can log in at the same time with this user.
+- user: alice
+  password: change_me_alice
+  shared_users: '2'
+- user: bob
+  password: change_me_bob
+  shared_users: '1'

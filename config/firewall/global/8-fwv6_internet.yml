@@ -1,22 +1,22 @@
 /ipv6/firewall/filter:
-- comment: "internal_to_internetv6"
+- comment: "v6_forward_accept_not_private"
   order: posi
   posi: '5'
   chain: forward
-  src_address_list: SET_NET6_PRIVATE
-  dst_address_list: '!SET_NET6_PRIVATE'
+  src_address_list: ACL6_NETS_PRIVATE
+  dst_address_list: '!ACL6_NETS_PRIVATE'
   log: 'false'
   log_prefix: 'no'
   disabled: 'false'
   action: 'accept'
 
 
-- comment: "fw_ipv6_disabled_sites"
+- comment: "v6_forward_reject_blocked"
   order: posi
   posi: '4'
   chain: forward
-  src_address_list: SET_NET6_PRIVATE
-  dst_address_list: SET_NET6_DISABLED_IPV6_SITES
+  src_address_list: ACL6_NETS_PRIVATE
+  dst_address_list: ACL6_NETS_BLOCKED
   log: 'false'
   log_prefix: 'no'
   disabled: 'false'
@@ -25,7 +25,7 @@
 
 /ipv6/firewall/mangle:
 
-- comment: "ipv6_clamp_mss_to_pmtu"
+- comment: "v6_mangle_forward_changemss_tcp"
   order: top
   chain: forward
   protocol: tcp
