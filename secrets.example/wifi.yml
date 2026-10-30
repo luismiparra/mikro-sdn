@@ -1,0 +1,32 @@
+#WiFi profile (configlet wifi). The file name is the wifi_profile of the device in the inventory
+#(wifi_profile: "wifi" -> secrets/wifi.yml). Uses the legacy /interface/wireless package.
+
+#RADIUS servers used when the device has radius_core: false.
+#vlan_src '0' uses 127.0.0.1 as source, any other number uses the gateway of that vlan.
+radius_server:
+  - name: radius_local
+    ip: 10.21.2.10
+    service: wireless
+    vlan_src: '1'
+    timeout: 3s
+
+#Security profiles, pushed 1:1 to /interface/wireless/security-profiles
+#(supplicant_identity is set to the device name by the automation).
+sec_profile:
+  - comment: sec_profile_wpa2_eap
+    name: wpa2_eap
+    mode: dynamic-keys
+    authentication_types: wpa2-eap
+    eap_methods: passthrough
+    radius_eap_accounting: 'no'
+    use_set: false
+
+#Wireless interfaces, pushed 1:1 to /interface/wireless. vlan_id is the vlan (pvid) of the
+#bridge port the interface is added to.
+int_wifi:
+  - comment: int_wifi_1
+    name: wlan1
+    ssid: example-wifi
+    security_profile: wpa2_eap
+    vlan_id: '1'
+    use_set: true

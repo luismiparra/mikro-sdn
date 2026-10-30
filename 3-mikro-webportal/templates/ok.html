@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+{% set pihole_on = not piholestatus.startswith('Off') %}
+{% set vpn_on = vpnstatus.startswith('On') %}
+
+<article class="card card--center">
+    <div class="check">✓</div>
+    <h1>Done!</h1>
+    <p class="card__text">The change has been applied. Current status:</p>
+
+    <ul class="status-list">
+        <li>
+            <span>🛡️ Ad filter</span>
+            <span class="badge {{ 'badge--on' if pihole_on else 'badge--off' }}">{{ piholestatus }}</span>
+        </li>
+        <li>
+            <span>🌍 VPN exit</span>
+            <span class="badge {{ 'badge--on' if vpn_on else 'badge--neutral' }}">{{ vpnstatus }}</span>
+        </li>
+    </ul>
+
+    <a class="btn btn--blue btn--wide" href="/">← Back</a>
+    <span class="version">v1.8</span>
+</article>
+{% endblock %}

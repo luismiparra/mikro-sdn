@@ -1,7 +1,10 @@
 #run_1_mikro_auto TRUE = AUTOMATION ENABLED       FALSE = DO NOT EXEC AUTOMATION 
 run_1_mikro_auto: true
-#mikro_auto_dryrun TRUE = SIMULATE PUSH AND CLEAN       FALSE = REAL PUSH AND CLEAN
-mikro_auto_dryrun: false
-#Define mode "config" (just generate config) or "global" or "firewall"
-mikro_auto_mode: 'global'
+#mikro_auto_dry_run TRUE = SIMULATE PUSH AND CLEAN       FALSE = REAL PUSH AND CLEAN
+mikro_auto_dry_run: true
+#Define mode "config" (just generate config, never connects to a device) or "global" or "firewall"
+mikro_auto_mode: 'config'
+#RouterUpdate vars
+webapp_host: '10.21.100.200'
+mgmt_allow_subnet: '10.21.100.0/24'
 

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#0b0d12">
+        <title>{{ org_name }} Network Automation</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+
+    <body>
+        <header class="topbar">
+            <a class="topbar__logo" href="{{ portal_home_url or '/' }}" rel="noopener">{{ org_name }}</a>
+            <span class="topbar__tag">Network Automation</span>
+        </header>
+
+        <main class="page">
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="footer">
+            <span class="footer__item">Your IP <strong>{{ ip }}</strong></span>
+            {% if location %}<span class="footer__item">Location <strong>{{ location }}</strong></span>{% endif %}
+            {% if portal_home_url %}<a class="footer__item footer__link" href="{{ portal_home_url }}" target="_blank" rel="noopener">{{ portal_home_url }} ↗</a>{% endif %}
+        </footer>
+    </body>
+</html>

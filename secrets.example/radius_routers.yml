@@ -1,0 +1,5 @@
+#RADIUS clients (NAS) allowed to authenticate against the user-manager (configlet radius_server).
+#ip is the source address the client router uses, secret must match RADIUS_SECRET on the clients.
+- name: lab-mikro2
+  ip: 10.22.1.1
+  secret: change_me_radius_secret

@@ -1,0 +1,28 @@
+/ip/firewall/nat:
+- comment: "v4_nat_dstnat_udp_portal_dns"
+  order: top
+  chain: dstnat
+  src_address_list: 'ACL4_PORTAL_DNS'
+  dst_address: '10.21.3.53'
+  dst_port: '53'
+  to_addresses: '10.21.3.54'
+  to-ports: '53'
+  protocol: udp
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'dst-nat'
+
+- comment: "v4_nat_dstnat_udp_portal_dns_2"
+  order: top
+  chain: dstnat
+  src_address_list: 'ACL4_PORTAL_DNS'
+  dst_address: '10.22.3.53'
+  dst_port: '53'
+  to_addresses: '10.21.3.54'
+  to-ports: '53'
+  protocol: udp
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'dst-nat'

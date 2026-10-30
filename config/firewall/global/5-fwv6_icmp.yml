@@ -1,13 +1,8 @@
 /ipv6/firewall/filter:
 
-# -------------------------------------------------
-# The following configuration is just an example.
-# You need to create the files for your needs.
-# -------------------------------------------------
-
 #INPUT
 
-- comment: "icmpv6_local-1"
+- comment: "v6_input_accept_icmpv6_t1"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -15,7 +10,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_local-2"
+- comment: "v6_input_accept_icmpv6_t2"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -23,7 +18,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_local-3"
+- comment: "v6_input_accept_icmpv6_t3"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -31,7 +26,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_local-4"
+- comment: "v6_input_accept_icmpv6_t4"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -39,7 +34,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_local-128"
+- comment: "v6_input_accept_icmpv6_t128"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -47,7 +42,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_local-129"
+- comment: "v6_input_accept_icmpv6_t129"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -55,7 +50,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_local-133"
+- comment: "v6_input_accept_icmpv6_t133"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -63,7 +58,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_local-134"
+- comment: "v6_input_accept_icmpv6_t134"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -71,7 +66,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_local-135"
+- comment: "v6_input_accept_icmpv6_t135"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -79,7 +74,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_local-136"
+- comment: "v6_input_accept_icmpv6_t136"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -87,7 +82,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_local-137"
+- comment: "v6_input_accept_icmpv6_t137"
   order: top
   chain: input
   protocol: "icmpv6"
@@ -97,7 +92,7 @@
 
 #FORWARD
 
-- comment: "icmpv6_forward-1"
+- comment: "v6_forward_accept_icmpv6_t1"
   order: top
   chain: forward
   protocol: "icmpv6"
@@ -105,7 +100,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_forward-2"
+- comment: "v6_forward_accept_icmpv6_t2"
   order: top
   chain: forward
   protocol: "icmpv6"
@@ -113,7 +108,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_forward-3"
+- comment: "v6_forward_accept_icmpv6_t3"
   order: top
   chain: forward
   protocol: "icmpv6"
@@ -121,7 +116,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_forward-4"
+- comment: "v6_forward_accept_icmpv6_t4"
   order: top
   chain: forward
   protocol: "icmpv6"
@@ -129,7 +124,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_forward-128"
+- comment: "v6_forward_accept_icmpv6_t128"
   order: top
   chain: forward
   protocol: "icmpv6"
@@ -137,7 +132,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_forward-129"
+- comment: "v6_forward_accept_icmpv6_t129"
   order: top
   chain: forward
   protocol: "icmpv6"
@@ -145,7 +140,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_forward-133"
+- comment: "v6_forward_accept_icmpv6_t133"
   order: top
   chain: forward
   protocol: "icmpv6"
@@ -153,7 +148,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_forward-134"
+- comment: "v6_forward_accept_icmpv6_t134"
   order: top
   chain: forward
   protocol: "icmpv6"
@@ -161,7 +156,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_forward-135"
+- comment: "v6_forward_accept_icmpv6_t135"
   order: top
   chain: forward
   protocol: "icmpv6"
@@ -169,7 +164,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_forward-136"
+- comment: "v6_forward_accept_icmpv6_t136"
   order: top
   chain: forward
   protocol: "icmpv6"
@@ -177,7 +172,7 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "icmpv6_forward-137"
+- comment: "v6_forward_accept_icmpv6_t137"
   order: top
   chain: forward
   protocol: "icmpv6"

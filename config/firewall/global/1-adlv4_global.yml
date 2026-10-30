@@ -1,79 +1,151 @@
 /ip/firewall/address-list:
 
-# -------------------------------------------------
-# The following configuration is just an example.
-# You need to create the files for your needs.
-# -------------------------------------------------
+# -------------------------------------------------------------------------------------------------
+# Address lists of the LAB network (example values). One entry per list: the comment is the list
+# name and every address becomes its own entry (comment <list>_<address>).
+#
+# Lab plan:  site N = 10.2N.0.0/16 (lab-mikro1 = 10.21.0.0/16 ... lab-mikro6 = 10.26.0.0/16)
+#            VLAN 1 trusted, 2 dmz, 3 services, 4 guest, 5 lab  ->  10.2N.<vlan>.0/24
+#            management VPN (lab-mikro1 mgmt_vpn)  10.21.100.0/24
+#            management LAN of the lab routers     192.168.88.0/24
+# -------------------------------------------------------------------------------------------------
 
-- comment: "SET_NET4_SAFE"
-  address: 
-  #Guest networks
-  - '10.151.1.0/24'
-  - '10.152.1.0/24'
-  - '10.153.1.0/24'
-  - '10.154.1.0/24'
-  - '10.155.1.0/24'
+#Hosts whose internet traffic leaves through the VPN exit core (internet configlet)
+- comment: "ACL4_HOSTS_VPN_EXIT"
+  address:
+  - '10.21.4.0/24'          #guest vlan of every site
+  - '10.22.4.0/24'
+  - '10.23.4.0/24'
+  - '10.24.4.0/24'
+  - '10.25.4.0/24'
+  - '10.26.4.0/24'
 
-- comment: "SET_HOSTS4_ROUTEVIA_WG"
-  address: 
-  #Guest networks
-  - '10.151.4.0/24'
-  - '10.152.4.0/24'
-  - '10.153.4.0/24'
-  - '10.154.4.0/24'
-  - '10.155.4.0/24'
+- comment: "ACL4_HOSTS_VPN_EXIT2"
+  address:
+  - '10.21.5.50'
 
-- comment: "SET_NET4_NOLOG"
-  address: 
-  - '127.0.0.1'
-  - '224.0.0.1'
+#Remote-access VPN users (user_vpn2 of lab-mikro1)
+- comment: "ACL4_HOSTS_VPN_USERS"
+  address:
+  - '10.21.102.0/24'
+
+#Sources/destinations never logged by the final drop rules
+- comment: "ACL4_NETS_NOLOG"
+  address:
+  - '224.0.0.0/4'
   - '255.255.255.255'
 
-- comment: "SET_NET4_PRIVATE"
-  address: 
-  - '10.0.0.0/8'       
-  - '172.16.0.0/12'  
+#Every site of the network
+- comment: "ACL4_NETS_SITES"
+  address:
+  - '10.21.0.0/16'
+  - '10.22.0.0/16'
+  - '10.23.0.0/16'
+  - '10.24.0.0/16'
+  - '10.25.0.0/16'
+  - '10.26.0.0/16'
 
-- comment: "SET_HOSTS4_ALLOW_MGMT"
-  address: 
-#Localhost
+#Trusted vlan (1) of every site
+- comment: "ACL4_NETS_TRUSTED"
+  address:
+  - '10.21.1.0/24'
+  - '10.22.1.0/24'
+  - '10.23.1.0/24'
+  - '10.24.1.0/24'
+  - '10.25.1.0/24'
+  - '10.26.1.0/24'
+
+- comment: "ACL4_NETS_PRIVATE"
+  address:
+  - '10.0.0.0/8'
+  - '172.16.0.0/12'
+  - '192.168.0.0/16'
+
+#Who may manage the routers (API, SSH, WinBox, HTTPS). Add the automation host here.
+- comment: "ACL4_HOSTS_MGMT"
+  address:
   - '127.0.0.1'
-#P2P WG MAIN NET
-  - '10.151.250.0/24'
-  - '10.152.250.0/24' 
-  - '10.153.250.0/24' 
-  - '10.154.250.0/24' 
-  - '10.155.250.0/24' 
-  - '10.156.250.0/24' 
+  - '192.168.88.0/24'       #lab management LAN
+  - '10.21.100.0/24'        #management VPN
+  - '10.21.101.0/24'        #admin VPN
+  - '10.21.250.0/24'        #WAN transit of lab-mikro1
+  - '10.22.250.0/24'
+  - '10.23.250.0/24'
 
+- comment: "ACL4_HOSTS_MGMT_VPN"
+  address:
+  - '10.21.100.0/24'
 
-- comment: "SET_NET4_INTERNET"
-  address: 
+- comment: "ACL4_NETS_INTERNET"
+  address:
   - '0.0.0.0/0'
-  
 
-- comment: "SET_NET4_RP_DMZ"
-  address: 
-  - '10.151.2.0/24'
-  - '10.152.2.0/24'
-  - '10.153.2.0/24'
-  - '10.154.2.0/24'
-  - '10.155.2.0/24'
-  - '10.156.2.0/24'
+- comment: "ACL4_HOSTS_MONITORING"
+  address:
+  - '10.21.3.30'
 
+- comment: "ACL4_NETS_DMZ"
+  address:
+  - '10.21.2.0/24'
+  - '10.22.2.0/24'
+  - '10.23.2.0/24'
+  - '10.24.2.0/24'
+  - '10.25.2.0/24'
+  - '10.26.2.0/24'
 
-- comment: "SET_HOSTS4_NTP"
-  address: 
-  - '10.151.2.2'
+- comment: "ACL4_HOSTS_NTP"
+  address:
+  - '10.21.3.10'
 
-- comment: "SET_HOSTS4_LOG"
-  address: 
-  - '10.151.2.2'
+- comment: "ACL4_HOSTS_SYSLOG"
+  address:
+  - '10.21.3.10'
 
-- comment: "SET_HOSTS4_DNS"
-  address: 
-  - '10.151.2.88'
-  - '10.152.2.88'
+- comment: "ACL4_HOSTS_DNS"
+  address:
+  - '10.21.3.53'
+  - '10.22.3.53'
 
+- comment: "ACL4_HOSTS_WEB"
+  address:
+  - '10.21.2.80'
 
+- comment: "ACL4_HOSTS_RADIUS_SERVERS"
+  address:
+  - '10.21.1.1'             #user-manager on the cores
+  - '10.22.1.1'
+  - '10.23.1.1'
 
+- comment: "ACL4_HOSTS_RADIUS_CLIENTS"
+  address:
+  - '10.24.1.1'
+  - '10.25.1.1'
+  - '10.26.1.1'
+
+- comment: "ACL4_HOSTS_NETFLOW"
+  address:
+  - '10.21.1.1'
+  - '10.22.1.1'
+  - '10.23.1.1'
+  - '10.24.1.1'
+  - '10.25.1.1'
+  - '10.26.1.1'
+
+- comment: "ACL4_HOSTS_APPS_DMZ"
+  address:
+  - '10.21.2.20'
+  - '10.21.2.21'
+
+- comment: "ACL4_HOSTS_APPS_TRUSTED"
+  address:
+  - '10.21.1.20'
+
+- comment: "ACL4_HOSTS_STORAGE"
+  address:
+  - '10.21.3.40'
+
+- comment: "ACL4_HOSTS_STORAGE_CLIENTS"
+  address:
+  - '10.21.2.20'
+  - '10.21.2.21'
+  - '10.21.1.20'

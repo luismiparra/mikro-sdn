@@ -1,13 +1,15 @@
 routeros_api
 python-dotenv
-wireguard
 wgconfig
 qrcode
-image
+pillow
 markdown
 jinja2
 pyyaml
+requests
 influxdb-client
 icmplib
 pandas
 flask
+pynetbox
+python-slugify

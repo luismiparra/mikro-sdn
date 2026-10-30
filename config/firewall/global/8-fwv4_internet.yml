@@ -1,9 +1,9 @@
 /ip/firewall/filter:
-- comment: "internal_to_internetv4"
+- comment: "v4_forward_accept_not_private"
   order: top
   chain: forward
-  src_address_list: SET_NET4_PRIVATE
-  dst_address_list: '!SET_NET4_PRIVATE'
+  src_address_list: ACL4_NETS_PRIVATE
+  dst_address_list: '!ACL4_NETS_PRIVATE'
   log: 'false'
   log_prefix: 'no'
   disabled: 'false'
@@ -12,7 +12,7 @@
 
 /ip/firewall/mangle:
 
-- comment: "ipv4_clamp_mss_to_pmtu"
+- comment: "v4_mangle_forward_changemss_tcp"
   order: top
   chain: forward
   protocol: tcp

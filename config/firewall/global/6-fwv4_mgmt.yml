@@ -1,8 +1,8 @@
 /ip/firewall/filter:
-- comment: "local_mgmt"
+- comment: "v4_input_accept_tcp_mgmt"
   order: top
   chain: input
-  src_address_list: SET_HOSTS4_ALLOW_MGMT
+  src_address_list: ACL4_HOSTS_MGMT
   dst_port: '21,22,23,80,443,8291,8728,8729,2000'
   protocol: tcp
   log: 'false'
@@ -10,10 +10,10 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "local_mgmt_udp"
+- comment: "v4_input_accept_udp_mgmt"
   order: top
   chain: input
-  src_address_list: SET_HOSTS4_ALLOW_MGMT
+  src_address_list: ACL4_HOSTS_MGMT
   dst_port: '161,1812,1813,5678'
   protocol: udp
   log: 'false'
@@ -21,21 +21,32 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "vpnmgmt_allow_all"
+- comment: "v4_input_accept_mgmt_vpn"
   order: top
   chain: input
-  src_address_list: SET_HOSTS4_MGMTVPN
-  dst_address_list: SET_HOSTS4_MGMTVPN
+  src_address_list: ACL4_HOSTS_MGMT_VPN
+  dst_address_list: ACL4_HOSTS_MGMT_VPN
   log: 'false'
   log_prefix: 'no'
   disabled: 'false'
   action: 'accept'
 
-- comment: "input_monitoring"
+- comment: "v4_input_accept_udp_monitoring"
   order: top
   chain: input
-  src_address_list: SET_HOSTS4_MONITORING
+  src_address_list: ACL4_HOSTS_MONITORING
   dst_port: '161'
+  protocol: udp
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'
+
+- comment: "v4_input_accept_udp_radius_clients"
+  order: top
+  chain: input
+  src_address_list: ACL4_HOSTS_RADIUS_CLIENTS
+  dst_port: '1812-1813'
   protocol: udp
   log: 'false'
   log_prefix: 'no'

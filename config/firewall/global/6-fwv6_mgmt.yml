@@ -1,8 +1,8 @@
 /ipv6/firewall/filter:
-- comment: "local_v6_mgmt"
+- comment: "v6_input_accept_tcp_mgmt"
   order: top
   chain: input
-  src_address_list: SET_HOSTS6_ALLOW_MGMT
+  src_address_list: ACL6_HOSTS_MGMT
   dst_port: '22,8291,8729'
   protocol: tcp
   log: 'false'
@@ -10,10 +10,10 @@
   disabled: 'false'
   action: 'accept'
 
-- comment: "inputv6_monitoring"
+- comment: "v6_input_accept_udp_monitoring"
   order: top
   chain: input
-  src_address_list: SET_HOSTS6_MONITORING
+  src_address_list: ACL6_HOSTS_MONITORING
   dst_port: '161'
   protocol: udp
   log: 'false'
@@ -21,3 +21,13 @@
   disabled: 'false'
   action: 'accept'
 
+- comment: "v6_input_accept_udp_radius_clients"
+  order: top
+  chain: input
+  src_address_list: ACL6_HOSTS_RADIUS_CLIENTS
+  dst_port: '1812-1813'
+  protocol: udp
+  log: 'false'
+  log_prefix: 'no'
+  disabled: 'false'
+  action: 'accept'
